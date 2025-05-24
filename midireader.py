@@ -4,11 +4,11 @@ import keyboard
 import time
 import threading
 
+
 thrd = threading.Event()
 
 USER_INPUT = 4
 
-filename = "./serpents.mid"
 
 note_to_hold_singular = {
     'C': 'w',
@@ -71,11 +71,6 @@ def stop_playback(event=None):
     keyboard.press_and_release(note_to_hold_singular[notes_log[-1]]) #this is to fix the infinite moving 
     notes_log.clear()
 
-keyboard.add_hotkey("F5", lambda: play(filename))
-keyboard.add_hotkey("F6", stop_playback)
-
-
-
 
 #note = note_to_key.get()
 #note = note_to_key.get('C')
@@ -84,11 +79,4 @@ keyboard.add_hotkey("F6", stop_playback)
 #keyboard.press('space')
 #keyboard.release('space')
 
-
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()
 
