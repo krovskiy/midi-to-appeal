@@ -3,24 +3,9 @@ import umidiparser
 import keyboard
 import threading
 import time
-
+from note_mapping import note_to_hold_multiple, note_to_hold_singular
 
 thrd = threading.Event()
-
-note_to_hold_singular = {
-    'C': 'w',
-    'E': 'd',
-    'G': 's',
-    'B': 'a',
-    
-}
-
-note_to_hold_multiple = {
-    'D': ['w','d'],
-    'F': ['d','s'],
-    'A': ['s','a'],
-    'C': ['a','w']
-}
 
 def get_note_key(note):
     note_mod = note % 12
@@ -32,7 +17,7 @@ def get_note_key(note):
 
 notes_log = []
 
-def play(filename, bpm=int, USER_INPUT=int):
+def play(filename, bpm=128, USER_INPUT=0, EVENT_CHANNEL=0):
     thrd.clear()
     sps = 60 / (bpm * umidiparser.MidiFile(filename).miditicks_per_quarter)
     def playback():
@@ -41,7 +26,7 @@ def play(filename, bpm=int, USER_INPUT=int):
             time.sleep(sleep_duration)
             if thrd.is_set():
                 break
-            if event.status == umidiparser.NOTE_ON and event.velocity > 0:
+            if event.status == umidiparser.NOTE_ON and event.velocity > 0 and event.channel == EVENT_CHANNEL:
                 bnote = get_note_key(event.note-int(USER_INPUT))
                 print(f"The note: {bnote}")
                 notes_log.append(bnote)
@@ -51,7 +36,7 @@ def play(filename, bpm=int, USER_INPUT=int):
                 elif bnote in note_to_hold_multiple:
                     for key in note_to_hold_multiple[bnote]:
                         keyboard.press(key)
-            if event.status == umidiparser.NOTE_OFF:
+            if event.status == umidiparser.NOTE_OFF and event.channel == EVENT_CHANNEL:
                 bnote = get_note_key(event.note-int(USER_INPUT))
                 if bnote in note_to_hold_singular:
                     keyboard.release(note_to_hold_singular[bnote])
@@ -63,6 +48,22 @@ def play(filename, bpm=int, USER_INPUT=int):
 
 def stop_playback(event=None):
     thrd.set()
-    print(f"Quit note: {notes_log[-1]}")
-    keyboard.press_and_release(note_to_hold_singular[notes_log[-1]]) #this is to fix the infinite moving 
-    notes_log.clear()
+
+    if not notes_log:
+        print("No notes")
+        return
+
+    note = notes_log[-1]
+    print(f"Quit note: {note}")
+
+    try:
+        if note in note_to_hold_singular:
+            keyboard.press_and_release(note_to_hold_singular[note])
+        elif note in note_to_hold_multiple:
+            for key in note_to_hold_multiple[note]:
+                keyboard.press_and_release(key)
+        else:
+            print(f"Note {note} not found")
+            
+    except Exception as e:
+        print(f"Error releasing note {note}: {e}")
