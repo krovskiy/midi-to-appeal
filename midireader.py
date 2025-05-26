@@ -1,14 +1,11 @@
 
 import umidiparser
 import keyboard
-import time
 import threading
+import time
 
 
 thrd = threading.Event()
-
-USER_INPUT = 4
-
 
 note_to_hold_singular = {
     'C': 'w',
@@ -35,16 +32,16 @@ def get_note_key(note):
 
 notes_log = []
 
-def play(filename):
+def play(filename, bpm=int, USER_INPUT=int):
     thrd.clear()
-
+    sps = 60 / (bpm * umidiparser.MidiFile(filename).miditicks_per_quarter)
     def playback():
-        for event in umidiparser.MidiFile(filename).play():
-
+        for event in umidiparser.MidiFile(filename):
+            sleep_duration = event.delta_miditicks*sps
+            time.sleep(sleep_duration)
             if thrd.is_set():
                 break
-
-            if event.status == umidiparser.NOTE_ON:
+            if event.status == umidiparser.NOTE_ON and event.velocity > 0:
                 bnote = get_note_key(event.note-int(USER_INPUT))
                 print(f"The note: {bnote}")
                 notes_log.append(bnote)
@@ -54,7 +51,6 @@ def play(filename):
                 elif bnote in note_to_hold_multiple:
                     for key in note_to_hold_multiple[bnote]:
                         keyboard.press(key)
-
             if event.status == umidiparser.NOTE_OFF:
                 bnote = get_note_key(event.note-int(USER_INPUT))
                 if bnote in note_to_hold_singular:
@@ -62,7 +58,7 @@ def play(filename):
                 elif bnote in note_to_hold_multiple:
                     for key in note_to_hold_multiple[bnote]:
                         keyboard.release(key)
-
+            
     threading.Thread(target=playback, daemon=True).start()
 
 def stop_playback(event=None):
@@ -70,13 +66,3 @@ def stop_playback(event=None):
     print(f"Quit note: {notes_log[-1]}")
     keyboard.press_and_release(note_to_hold_singular[notes_log[-1]]) #this is to fix the infinite moving 
     notes_log.clear()
-
-
-#note = note_to_key.get()
-#note = note_to_key.get('C')
-#print(note)
-
-#keyboard.press('space')
-#keyboard.release('space')
-
-
