@@ -1,16 +1,20 @@
 import sys
 import keyboard
 import qdarkstyle
+from os import environ
+environ["QT_API"] = "pyside6"
+from qtpy.QtCore import QCoreApplication
+import qdarkstyle
 from midireader import play, stop_playback
 from PySide6 import QtCore, QtWidgets, QtGui
-from PySide6.QtGui import QFont, QPixmap, QPainter, QBitmap, QPainterPath, QMovie
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QFont
 from note_mapping import chords_to_int
 
 class MyWidget(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setup_window()
+        self.create_labels()
         self.create_widgets()
         self.style_widgets()
         self.channel_config()
@@ -24,23 +28,26 @@ class MyWidget(QtWidgets.QWidget):
         self.setWindowTitle("midi-to-appeal")
 
     def create_widgets(self):
-        self.text = QtWidgets.QLabel("midi-to-appeal")
-        self.uptext = QtWidgets.QLabel("version 1.0")
-        self.bottomtext = QtWidgets.QLabel("by dima and erica ⋆｡°✩")
-        self.label = QtWidgets.QLabel()
         self.button = QtWidgets.QPushButton("Open file")
         self.textEdit = QtWidgets.QLineEdit()
-        self.bpm_input_text = QtWidgets.QLabel("BPM:")
-        self.channel_input_text = QtWidgets.QLabel("Channel:")
         self.bpm_input = QtWidgets.QSpinBox()
         self.channel_input = QtWidgets.QSpinBox()
-        self.select_chord_text = QtWidgets.QLabel("Chord:")
         self.select_chord = QtWidgets.QComboBox()
 
         pixmap = QtGui.QPixmap("si3lEuEp2Fk.png")
         pixmap = pixmap.scaled(100, 200, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
         self.label.setPixmap(pixmap)
         self.button.clicked.connect(self.open_file)
+    
+    def create_labels(self):
+        self.text = QtWidgets.QLabel("midi-to-appeal")
+        self.uptext = QtWidgets.QLabel("version 1.0")
+        self.bottomtext = QtWidgets.QLabel("by dima and erica ⋆｡°✩")
+        self.label = QtWidgets.QLabel()
+        self.bpm_input_text = QtWidgets.QLabel("BPM:")
+        self.channel_input_text = QtWidgets.QLabel("Channel:")
+        self.select_chord_text = QtWidgets.QLabel("Chord:")
+
 
     def style_widgets(self):
      
