@@ -1,29 +1,29 @@
 note_to_hold_singular = {
-    'C': 'w',
-    'E': 'd',
-    'G': 's',
-    'B': 'a',
+    'B': 'w',
+    'D#': 'd',
+    'F#': 's',
+    'A#': 'a',
     
 }
 
 chords_to_int = {
-    'A Minor / C Major': 0,
-    'A# Minor / C# Major': 1,
-    'B Minor / D Major': 2,
-    'C Minor / D# Major': 3,
-    'C# Minor / E Major': 4,
-    'D Minor / F Major': 5,
-    'D# Minor / F# Major': 6,
-    'E Minor / G Major': 7,
-    'F Minor / G# Major': 8,
-    'F# Minor / A Major': 9,
-    'G Minor / A# Major': 10,
-    'G# Minor / B Major': 11
+    'G# Minor / B Major': 0,
+    'A Minor / C Major': 1,
+    'A# Minor / C# Major': 2,
+    'B Minor / D Major': 3,
+    'C Minor / Eb Major': 4,
+    'C# Minor / E Major': 5,
+    'D Minor / F Major': 6,
+    'D# Minor / F# Major': 7,
+    'E Minor / G Major': 8,
+    'F Minor / Ab Major': 9,
+    'F# Minor / A Major': 10,
+    'G Minor / Bb Major': 11
 }
 
 note_to_hold_multiple = {
-    'D': ['w','d'],
-    'F': ['d','s'],
-    'A': ['s','a'],
-    'C': ['a','w']
+    'C#': ['w','d'],
+    'E': ['d','s'],
+    'G#': ['s','a'],
+    'B': ['a','w']
 }
