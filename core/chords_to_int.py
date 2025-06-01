@@ -1,11 +1,3 @@
-note_to_hold_singular = {
-    'B': 'w',
-    'D#': 'd',
-    'F#': 's',
-    'A#': 'a',
-    
-}
-
 chords_to_int = {
     'G# Minor / B Major': 0,
     'A Minor / C Major': 1,
@@ -19,11 +11,4 @@ chords_to_int = {
     'F Minor / Ab Major': 9,
     'F# Minor / A Major': 10,
     'G Minor / Bb Major': 11
-}
-
-note_to_hold_multiple = {
-    'C#': ['w','d'],
-    'E': ['d','s'],
-    'G#': ['s','a'],
-    'B': ['a','w']
 }

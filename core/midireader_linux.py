@@ -3,7 +3,7 @@ import threading
 import time
 from os import path
 import pynput
-from note_mapping import note_to_hold_multiple, note_to_hold_singular
+from .note_mapping import note_to_hold_multiple, note_to_hold_singular
 
 thrd = threading.Event()
 

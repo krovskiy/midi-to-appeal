@@ -10,7 +10,7 @@ from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QFont
 
-from note_mapping import chords_to_int
+from core.chords_to_int import chords_to_int
 
 if name == "nt":
     from core.midireader_win import play, stop_playback
