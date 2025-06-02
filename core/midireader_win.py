@@ -12,8 +12,19 @@ def get_note_key(note):
 
 '''
 
-Functions to define on the how the script will take 
+Functions to define how the script will take MIDI note events and convert them to keyboard actions.
 
+The main approach:
+- Parse MIDI files and extract note on/off events
+- Map musical notes to keyboard keys using note mapping dictionaries
+- Handle special B note logic for octave-based key combinations
+- Simulate keyboard presses/releases in real-time based on MIDI timing
+
+Key behaviors:
+- B notes use special octave-based logic (higher/lower than first B note)
+- Other notes map directly to single keys or key combinations
+- Timing is preserved using BPM and MIDI ticks per quarter note
+- Playback runs in separate thread to avoid blockin
 
 '''
 

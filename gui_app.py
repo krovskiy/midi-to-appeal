@@ -1,11 +1,10 @@
 import sys
+import configparser
 from os import environ, name, path
 environ["QT_API"] = "pyside6"
 
 import keyboard
 import qdarkstyle
-import configparser
-from qtpy.QtCore import QCoreApplication
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QFont
@@ -17,6 +16,10 @@ if name == "nt":
 else:
     from core.midireader_linux import play, stop_playback
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return path.join(sys._MEIPASS, relative_path)
+    return path.join(path.abspath("."), relative_path)
 
 class MainWindow(QtWidgets.QWidget):
     playback_status_changed = Signal(str)
@@ -37,21 +40,23 @@ class MainWindow(QtWidgets.QWidget):
         self.style_text()
         self.playback_status_changed.connect(self.update_status_label)
         self.default_midiplaying()
-        
+
     def create_video(self):
-        self.sprites = ['./materials/idle.gif','./materials/playing.gif','./materials/completed.gif', './materials/stopped.gif']
+        self.sprites = [resource_path('./materials/idle.gif'),
+                        resource_path('./materials/playing.gif'),
+                        resource_path('./materials/completed.gif'),
+                        resource_path('./materials/stopped.gif')]
         self.status_animated = QtGui.QMovie(self.sprites[0])
         self.transform_video()
-    
+        
     def transform_video(self):
         org_size = self.status_animated.frameRect().size()
         max_size = QtCore.QSize(40, 40)
         scaled_size = org_size.scaled(max_size, QtCore.Qt.KeepAspectRatio)
         self.status_animated.setScaledSize(scaled_size)
-
     def setup_window(self):
         '''Window icon & title'''
-        self.setWindowIcon(QtGui.QIcon('icon.png'))
+        self.setWindowIcon(QtGui.QIcon(resource_path('icon.png')))
         self.setWindowTitle("midi-to-appeal")
 
     def eventFilter(self,obj,event):
@@ -82,7 +87,7 @@ class MainWindow(QtWidgets.QWidget):
         self.start_key_assign = QtWidgets.QLineEdit()
         self.stop_key_assign = QtWidgets.QLineEdit()
 
-        pixmap = QtGui.QPixmap("./materials/si3lEuEp2Fk.png")
+        pixmap = QtGui.QPixmap(resource_path("./materials/si3lEuEp2Fk.png"))
         pixmap = pixmap.scaled(100, 200, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
         self.label.setPixmap(pixmap)
         self.button.clicked.connect(self.open_file)
@@ -104,6 +109,7 @@ class MainWindow(QtWidgets.QWidget):
         self.status_label_animated = QtWidgets.QLabel()
 
     def style_text(self):
+        font_family_style = f"font-family: '{font_family}';"
         widgets = [self.bpm_input_text, self.channel_input_text, self.select_chord_text, self.select_mode_text, self.status_label]
         key_widgets = [self.start_key_assign_text, self.stop_key_assign_text]
         keys = [self.start_key_assign, self.stop_key_assign]
@@ -113,20 +119,23 @@ class MainWindow(QtWidgets.QWidget):
             s.setReadOnly(True)
 
         for k in key_widgets:
-            k.setStyleSheet("QLabel{font-family: 'Terminus'; font-size:13px;}")
+            k.setStyleSheet(f"QLabel{{{font_family_style}font-size:14px;}}")
+            k
 
         for w in widgets:
-            w.setStyleSheet("QLabel{font-family: 'Terminus'; font-size:14px;}")
+            w.setStyleSheet(f"QLabel{{{font_family_style}font-size:14px;}}")
 
         for f in fixed:
             f.setFixedSize(200,22)
 
     def style_widgets(self):
         '''Styling the widgets (or making them 'beautiful' idk)'''
+        font_family_style = f"font-family: '{font_family}';"
+
         self.text.setAlignment(QtCore.Qt.AlignCenter)
-        self.text.setStyleSheet("QLabel{font-size: 30px;font-family: 'Terminus';color: qlineargradient(x1:0, y1:0, x2:0, y2:110, stop:0 #04ff00, stop:1 #3700ff);margin-top: 30px;}")
-        self.uptext.setStyleSheet("QLabel{font-size: 13px;font-family: 'Terminus';color: qlineargradient(x1:0, y1:32, x2:0, y2:0, stop:0 #04ff00, stop:1 #3700ff);margin-top: 12px;}")
-        self.bottomtext.setStyleSheet("QLabel{font-size: 10px;font-family: 'Terminus';color: qlineargradient(x1:0, y1:120, x2:0, y2:0, stop:0 #3700ff, stop:1 #04ff00);margin-top:67px}")
+        self.text.setStyleSheet(f"QLabel{{{font_family_style}font-size: 32px;color: qlineargradient(x1:0, y1:0, x2:0, y2:110, stop:0 #04ff00, stop:1 #3700ff);margin-top: 30px;}}")
+        self.uptext.setStyleSheet(f"QLabel{{{font_family_style}font-size: 15px;color: qlineargradient(x1:0, y1:32, x2:0, y2:0, stop:0 #04ff00, stop:1 #3700ff);margin-top: 12px;}}")
+        self.bottomtext.setStyleSheet(f"QLabel{{{font_family_style}font-size: 12px;color: qlineargradient(x1:0, y1:120, x2:0, y2:0, stop:0 #3700ff, stop:1 #04ff00);margin-top:67px}}")
 
         self.status_label_animated.setMovie(self.status_animated)
         self.status_animated.start()
@@ -134,7 +143,7 @@ class MainWindow(QtWidgets.QWidget):
         self.installEventFilter(self)
 
         self.status_text.setText("Idle")
-        self.status_text.setStyleSheet("QLabel{font-size: 18px;font-family: 'Terminus';color:#808080;}")
+        self.status_text.setStyleSheet(f"QLabel{{{font_family_style}font-size: 18px;color:#808080;}}")
             
         self.button.setFont(QFont("Terminus", 12))
         self.button.setFixedHeight(22)
@@ -205,7 +214,6 @@ class MainWindow(QtWidgets.QWidget):
     
     def register_hotkeys(self, start_key, stop_key):
         self.clear_hotkeys()
-
         if not self.check_valid(start_key) or not self.check_valid(stop_key):
             return False
         if stop_key == start_key:
@@ -240,7 +248,6 @@ class MainWindow(QtWidgets.QWidget):
         status_callback = self.playback_status_changed.emit
         play(smidi_path, bpm, chord, channel, debug, status_callback)
             
-            
     def stop_arguments(self):
         event = None
         debug = False #change this value for debug
@@ -273,24 +280,26 @@ class MainWindow(QtWidgets.QWidget):
 
     def update_status_label(self, status):
         '''Checks the status from ./midireader_* and updates the GUI'''
+        font_family_style = f"font-family: '{font_family}';"
+
         self.status_animated.stop()
         self.status_animated.deleteLater()
        
         if status == "idle":
             self.status_text.setText("Idle")
-            self.status_text.setStyleSheet("QLabel{font-size: 18px;font-family: 'Terminus';color:#808080;}")
+            self.status_text.setStyleSheet(f"QLabel{{font-size: 18px;{font_family_style};color:#808080;}}")
             self.status_animated = QtGui.QMovie(self.sprites[0]) 
         elif status == "playing":
             self.status_text.setText("Playing")
-            self.status_text.setStyleSheet("QLabel{font-size: 18px;font-family: 'Terminus';color:#7CFC00;}")
+            self.status_text.setStyleSheet(f"QLabel{{font-size: 18px;{font_family_style};color:#7CFC00;}}")
             self.status_animated = QtGui.QMovie(self.sprites[1]) 
         elif status == "completed":
             self.status_text.setText("Completed")
-            self.status_text.setStyleSheet("QLabel{font-size: 18px;font-family: 'Terminus';color:#7DF9FF;}")
+            self.status_text.setStyleSheet(f"QLabel{{font-size: 18px;{font_family_style};;color:#7DF9FF;}}")
             self.status_animated = QtGui.QMovie(self.sprites[2]) 
         elif status == "stopped":
             self.status_text.setText("Stopped")
-            self.status_text.setStyleSheet("QLabel{font-size: 18px;font-family: 'Terminus';color:#FF0000;}")
+            self.status_text.setStyleSheet(f"QLabel{{font-size: 18px;{font_family_style};;color:#FF0000;}}")
             self.status_animated = QtGui.QMovie(self.sprites[3]) 
 
         self.transform_video()
@@ -329,7 +338,10 @@ if __name__ == "__main__":
     font = './fonts/TerminusTTF-4.49.3.ttf'
     font_id = QtGui.QFontDatabase.addApplicationFont(font)
     font_family = QtGui.QFontDatabase.applicationFontFamilies(font_id)[0]
-    app.setFont(QtGui.QFont(font_family))
+    font = QtGui.QFont(font_family)
+    font.setHintingPreference(QtGui.QFont.PreferFullHinting)
+    font.setStyleStrategy(QtGui.QFont.PreferAntialias)
+    app.setFont(font)
     widget = MainWindow()
     widget.setFixedSize(380,420)
     widget.show()
