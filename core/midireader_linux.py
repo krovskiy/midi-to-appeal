@@ -9,8 +9,11 @@ thrd = threading.Event()
 
 keyboard = pynput.keyboard.Controller()
 
+
 def get_note_key(note):
-    return ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'][note % 12]
+    return ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#',
+            'G', 'G#', 'A', 'A#', 'B'][note % 12]
+
 
 '''
 
@@ -44,13 +47,14 @@ def check_b_note_press(note, raw_note, first_b_note):
 
     return first_b_note
 
+
 def check_b_note_release(note, raw_note, first_b_note):
     if raw_note > first_b_note and note in note_to_hold_multiple:
         for key in note_to_hold_multiple[note]:
-                keyboard.release(key)            
+            keyboard.release(key)
 
     elif raw_note < first_b_note and note in note_to_hold_singular:
-            keyboard.release(note_to_hold_singular[note])  
+        keyboard.release(note_to_hold_singular[note])
 
 
 def keyboard_press(note):
@@ -64,15 +68,23 @@ def keyboard_press(note):
 def keyboard_release(note):
     if note in note_to_hold_singular:
         keyboard.release(note_to_hold_singular[note])
-                   
+
     elif note in note_to_hold_multiple:
         for key in note_to_hold_multiple[note]:
-                keyboard.release(key)
+            keyboard.release(key)
+
 
 notes_log = []
 play_lock = threading.Lock()
 
-def play(filename, bpm=128, USER_INPUT=0, EVENT_CHANNEL=0, debug=False, status_callback=None):
+
+def play(
+        filename,
+        bpm=128,
+        USER_INPUT=0,
+        EVENT_CHANNEL=0,
+        debug=False,
+        status_callback=None):
     if not filename or not filename.strip():
         if debug:
             print("Empty filename")
@@ -95,7 +107,8 @@ def play(filename, bpm=128, USER_INPUT=0, EVENT_CHANNEL=0, debug=False, status_c
     notes_log.clear()
     thrd.clear()
 
-    spt = 60 / (bpm * umidiparser.MidiFile(filename).miditicks_per_quarter) #seconds per tick
+    # seconds per tick
+    spt = 60 / (bpm * umidiparser.MidiFile(filename).miditicks_per_quarter)
 
     if not play_lock.acquire(blocking=False):
         if debug:
@@ -104,7 +117,7 @@ def play(filename, bpm=128, USER_INPUT=0, EVENT_CHANNEL=0, debug=False, status_c
 
     try:
         def playback():
-            B_NOTES = [11+(octave*12) for octave in range(10)]
+            B_NOTES = [11 + (octave * 12) for octave in range(10)]
             first_b_note = None
 
             if status_callback:
@@ -114,7 +127,7 @@ def play(filename, bpm=128, USER_INPUT=0, EVENT_CHANNEL=0, debug=False, status_c
                 time.sleep(event.delta_miditicks * spt)
                 if thrd.is_set():
                     break
-    
+
                 if event.status == umidiparser.NOTE_ON and event.velocity > 0 and event.channel == EVENT_CHANNEL:
                     raw_note = event.note - int(USER_INPUT)
                     note = get_note_key(raw_note)
@@ -122,7 +135,8 @@ def play(filename, bpm=128, USER_INPUT=0, EVENT_CHANNEL=0, debug=False, status_c
                     if debug:
                         print(f'The list is: {notes_log}')
                     if raw_note in B_NOTES:
-                        first_b_note = check_b_note_press(note, raw_note, first_b_note)
+                        first_b_note = check_b_note_press(
+                            note, raw_note, first_b_note)
                     else:
                         keyboard_press(note)
 
@@ -133,21 +147,21 @@ def play(filename, bpm=128, USER_INPUT=0, EVENT_CHANNEL=0, debug=False, status_c
                         check_b_note_release(note, raw_note, first_b_note)
                     else:
                         keyboard_release(note)
-                            
+
                 elif event.status == umidiparser.END_OF_TRACK:
                     status_callback("completed")
                     if debug:
                         print("Midi end!")
-                    break             
-                
+                    break
+
         threading.Thread(target=playback, daemon=True).start()
         return True
     finally:
         play_lock.release()
-        
 
-def stop_playback(event=None, debug=False,status_callback=None):
-   
+
+def stop_playback(event=None, debug=False, status_callback=None):
+
     thrd.set()
     with play_lock:
         if not notes_log:
@@ -171,6 +185,6 @@ def stop_playback(event=None, debug=False,status_callback=None):
                 if debug:
                     print(f"Note {note} not found")
             status_callback("stopped")
-                
+
         except Exception as e:
             print(f"Error releasing note {note}: {e}")
