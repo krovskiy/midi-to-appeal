@@ -4,9 +4,9 @@
   <img src="https://github.com/krovskiy/midi-to-appeal/blob/main/images/logo.png" width="400" alt="logo" align=center>
 </p>
 
-<h2 align=center>midi-to-appeal</h1>
+# 
 
-> “Just click it and make it easy.”
+> “up up down down left right left right b a”
 
 A MIDI-to-appeal converter that plays your favorite melodies in [MGO3](https://www.youtube.com/watch?v=rY1XP5YNrQI)!
 
@@ -17,6 +17,44 @@ A MIDI-to-appeal converter that plays your favorite melodies in [MGO3](https://w
 - Animated status indicators (idle, playing, completed, stopped)
 - Hotkey support for start/stop playback (configurable)
 - Cross-platform: Windows & Linux
+
+## Context
+
+In Metal Gear Online 3, every class — *Scout, Enforcer, and Infiltrator* — features an 'Appeal' system, which can be activated by holding `MOUSE3`. While primarily used to display character poses on the battlefield, the 'Appeal' system also serves as a simple musical interface.
+
+### Musical Functionality
+- The system is tuned to the B Major / G# Minor scale.
+
+- It includes 8 notes (from B to B*), spanning across two octaves (B4–B6).
+  
+- Notes are triggered via keyboard movement inputs:
+  - W, A, S, D for basic notes.
+  - Combinations like W+A, A+D, etc., expand the available notes.
+
+- To access the second octave, hold `MOUSE2` while pressing the Appeal input: `MOUSE1`.
+
+### Sound Traits by Class
+Each class has its own unique waveform/sound style:
+
+- Enforcer: (waveform: [blank])
+
+- Scout: (waveform: [blank])
+
+- Infiltrator: (waveform: [blank])
+
+Special Characters
+Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a drum kit rather than synth-based tones
+
+## How does this script work
+
+## TO-DO List
+
+- [ ] Use both octaves instead of just one  
+- [x] Add a config file  
+- [ ] Allow color customization  
+- [ ] Add `drumkit` mode for special characters  
+- [x] Switch to PySide6  
+- [ ] Optimize the code  
 
 ## Requirements
 
