@@ -1,4 +1,5 @@
 # Created by venv; see https://docs.python.org/3/library/venv.html
+# Ignore
 *
 Scripts
 Lib
@@ -9,3 +10,8 @@ pyvenv.cfg
 imgui.pack
 .vscode
 icon.ico
+# Allow
+!images/
+!images/*
+!midi-to-appeal_run.bat
+!midi-to-appeal_run.sh
