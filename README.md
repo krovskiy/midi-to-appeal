@@ -49,8 +49,8 @@ Each class has its own unique waveform/sound style:
 
 - Infiltrator: **Sine wave**
 
-Special Characters
-Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a drum kit rather than synth-based tones
+### Special Characters
+Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a `drumkit` rather than synth-based tones
 
 ## How does this script work
 
@@ -169,6 +169,7 @@ Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a drum ki
    - Double-click the `.exe` to run the application.
      
    **Note:** Some antivirus software may flag the executable. If you don't trust it, just use the other methods above. 🚩
+   
 <p align="center">
   <img src="https://github.com/krovskiy/midi-to-appeal/blob/main/materials/stopped.gif" width="100" alt="logo" align=center>
 </p>
