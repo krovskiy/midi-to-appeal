@@ -138,7 +138,6 @@ class MainWindow(QtWidgets.QWidget):
 
         for k in key_widgets:
             k.setStyleSheet(f"QLabel{{{font_family_style}font-size:14px;}}")
-            k
 
         for w in widgets:
             w.setStyleSheet(f"QLabel{{{font_family_style}font-size:14px;}}")
@@ -244,7 +243,10 @@ class MainWindow(QtWidgets.QWidget):
             'F9',
             'F10',
             'F11',
-            'F12']
+            'F12',
+            '[',
+            ']',
+            ';']
         return key in valid_keys
 
     def register_hotkeys(self, start_key, stop_key):
@@ -265,6 +267,7 @@ class MainWindow(QtWidgets.QWidget):
     def update_hotkeys(self):
         start_key = self.start_key_assign.text()
         stop_key = self.stop_key_assign.text()
+        self.register_hotkeys(start_key,stop_key)
 
     def bpm_config(self):
         self.bpm_input.setRange(80, 180)
@@ -281,13 +284,19 @@ class MainWindow(QtWidgets.QWidget):
         channel = int(self.channel_input.value() - 1)
         debug = False  # change this value for debug
         status_callback = self.playback_status_changed.emit
-        play(smidi_path, bpm, chord, channel, debug, status_callback)
+        if not self.isActiveWindow():
+            play(smidi_path, bpm, chord, channel, debug, status_callback)
+        else:
+            print('program in focus')
 
     def stop_arguments(self):
         event = None
         debug = False  # change this value for debug
         status_callback = self.playback_status_changed.emit
-        stop_playback(event, debug, status_callback)
+        if not self.isActiveWindow():
+            stop_playback(event, debug, status_callback)
+        else:
+            print('program in focus')
 
     def config_save(self):
         config = configparser.ConfigParser()
