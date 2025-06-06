@@ -15,6 +15,18 @@
 
 A MIDI-to-appeal converter that plays your favorite melodies in [MGO3](https://www.youtube.com/watch?v=rY1XP5YNrQI)!
 
+## Table of Contents
+
+- [Features](#features)
+- [Context](#context)
+  - [Musical Functionality](#musical-functionality)
+  - [Sound Traits by Class](#sound-traits-by-class)
+  - [Special characters](#special-characters)
+- [How does this script work](#how-does-this-script-work)
+- [Requirements](#requirements)
+- [Usage](#usage)
+- [TO-DO List](#to-do-list)
+- [FAQ](#faq)
 
 ## Features
 
@@ -98,17 +110,6 @@ Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a `drumki
 
 </details>
 
-
-## TO-DO List
-
-- [ ] Use both octaves instead of just one  
-- [x] Add a config file  
-- [ ] Allow color customization  
-- [ ] Add `drumkit` mode for special characters  
-- [x] Switch to PySide6  
-- [ ] Optimize the code 
-- [ ] Add note length (e.g. 0.2 - 0.8 ms) 
-
 ## Requirements
 
 - [Python 3.8+](https://www.python.org/downloads/)
@@ -169,6 +170,47 @@ Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a `drumki
    - Double-click the `.exe` to run the application.
      
    **Note:** Some antivirus software may flag the executable. If you don't trust it, just use the other methods above. 🚩
+
+## TO-DO List
+
+- [ ] Use both octaves instead of just one  
+- [x] Add a config file  
+- [ ] Allow color customization  
+- [ ] Add `drumkit` mode for special characters  
+- [x] Switch to PySide6  
+- [ ] Optimize the code 
+- [ ] Add note length (e.g. 0.2 - 0.8 ms) 
+
+## FAQ
+
+### Can I change my MIDIs with this program?
+
+No, this program just converts MIDI notes to keyboard inputs.
+
+### XYZ is broken! Can you fix it?
+
+Create a new [issue](https://github.com/krovskiy/midi-to-appeal/issues/new) with a clear description of the problem and I'll try to fix it!
+
+### You suck at coding, XYZ doesn't even make sense! Do you even know how this works?
+
+i tried my best :(
+
+### My antivirus flags the executable as a virus - is it safe?
+
+Well, if you don't trust the executable, you can follow the steps above and create your own! Also, -> [virustotal report](https://www.virustotal.com/gui/file/f08618105df9e718480373f465c3aad30cc773783c429df3e3f606ec11d11520?nocache=1)
+
+### Can I fork this project?
+
+Yes.
+
+### I know how to improve this project, can I help?
+
+Yes, submit a pull request with improvements!
+
+### Can I pet the Menhera?
+
+just a bit
+
    
 <p align="center">
   <img src="https://github.com/krovskiy/midi-to-appeal/blob/main/materials/stopped.gif" width="100" alt="logo" align=center>
