@@ -8,6 +8,11 @@
 
 > “up up down down left right left right b a”
 
+<details>
+<summary>Example of appeal actions</summary>
+<img src="https://github.com/krovskiy/midi-to-appeal/blob/main/images/mgo3.gif" align=center>
+</details>
+
 A MIDI-to-appeal converter that plays your favorite melodies in [MGO3](https://www.youtube.com/watch?v=rY1XP5YNrQI)!
 
 
