@@ -59,7 +59,7 @@ class MainWindow(QtWidgets.QWidget):
 
     def setup_window(self):
         '''Window icon & title'''
-        self.setWindowIcon(QtGui.QIcon(resource_path('icon.png')))
+        self.setWindowIcon(QtGui.QIcon(resource_path('./materials/icon.png')))
         self.setWindowTitle("midi-to-appeal")
 
     def eventFilter(self, obj, event):

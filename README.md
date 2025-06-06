@@ -84,7 +84,7 @@ Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a drum ki
    ```
 4. **(Optional) Build your application with Nuitka from source:**
    ```sh
-   nuitka --standalone --enable-plugin=pyside6 --include-data-dir=materials=materials --include-data-dir=fonts=fonts --include-data-file=icon.png=icon.png --include-data-file=config.ini=config.ini --output-dir=dist - output-filename=midi-to-appeal --windows-icon-from-ico=icon.ico --windows-disable-console gui_app.py
+   nuitka --standalone --enable-plugin=pyside6 --include-data-dir=materials=materials --include-data-dir=fonts=fonts --include-data-file=config.ini=config.ini --output-dir=dist --output-filename=midi-to-appeal --windows-icon-from-ico=./materials/icon.ico --windows-console-mode=disable gui_app.py
    ```
 ## Usage
 ### There are multiple ways to run the application:
@@ -103,12 +103,12 @@ Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a drum ki
 
    **Windows:**
     ```cmd
-    run_app.bat
+    midi-to-appeal_run.bat
     ```
     
     **Linux:**
     ```bash
-    ./run_app.sh
+    ./midi-to-appeal.sh
     ```
 3. **(Windows) Using the EXE file from Releases - not recommended**
    - Download the latest `.exe` from [Releases](https://github.com/krovskiy/midi-to-appeal/releases).
