@@ -8,7 +8,7 @@ note_to_hold_singular = {
 
 
 note_to_hold_multiple = {
-    'C#': ['w','d'],
+    'C#': ['d','w'],
     'E': ['d','s'],
     'G#': ['s','a'],
     'B': ['a','w']

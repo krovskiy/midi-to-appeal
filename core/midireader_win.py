@@ -27,32 +27,49 @@ Key behaviors:
 - B notes use special octave-based logic (higher/lower than first B note)
 - Other notes map directly to single keys or key combinations
 - Timing is preserved using BPM and MIDI ticks per quarter note
-- Playback runs in separate thread to avoid blockin
+- Playback runs in separate thread to avoid blocking
 
 '''
 
 
-def check_b_note_press(note, raw_note, first_b_note):
+
+
+def check_b_note_press(note, raw_note, first_b_note, b_note_direction):
     if first_b_note is None:
         first_b_note = raw_note
 
-    elif raw_note > first_b_note:
+    if raw_note > first_b_note:
         for key in note_to_hold_multiple[note]:
             keyboard.press(key)
 
     elif raw_note < first_b_note:
         keyboard.press(note_to_hold_singular[note])
 
+    elif raw_note == first_b_note:
+        if b_note_direction == "higher":
+            for key in note_to_hold_multiple[note]:
+                keyboard.press(key)
+        elif b_note_direction == "lower":
+            keyboard.press(note_to_hold_singular[note])
+
     return first_b_note
 
 
-def check_b_note_release(note, raw_note, first_b_note):
+def check_b_note_release(note, raw_note, first_b_note, b_note_direction):
     if raw_note > first_b_note and note in note_to_hold_multiple:
         for key in note_to_hold_multiple[note]:
             keyboard.release(key)
 
     elif raw_note < first_b_note and note in note_to_hold_singular:
         keyboard.release(note_to_hold_singular[note])
+
+    elif raw_note == first_b_note:
+        if b_note_direction == "higher" and note in note_to_hold_multiple:
+            for key in note_to_hold_multiple[note]:
+                keyboard.release(key)
+        elif b_note_direction == "lower" and note in note_to_hold_singular:
+            keyboard.release(note_to_hold_singular[note])
+
 
 
 def keyboard_press(note):
@@ -82,7 +99,8 @@ def play(
         USER_INPUT=0,
         EVENT_CHANNEL=0,
         debug=False,
-        status_callback=None):
+        status_callback=None,
+        b_note_direction="lower"):
     if not filename or not filename.strip():
         if debug:
             print("Empty filename")
@@ -134,7 +152,7 @@ def play(
                         print(f'The list is: {notes_log}')
                     if raw_note in B_NOTES:
                         first_b_note = check_b_note_press(
-                            note, raw_note, first_b_note)
+                            note, raw_note, first_b_note, b_note_direction)
                     else:
                         keyboard_press(note)
 
@@ -142,7 +160,7 @@ def play(
                     raw_note = event.note - int(USER_INPUT)
                     note = get_note_key(raw_note)
                     if raw_note in B_NOTES and first_b_note is not None:
-                        check_b_note_release(note, raw_note, first_b_note)
+                        check_b_note_release(note, raw_note, first_b_note, b_note_direction)
                     else:
                         keyboard_release(note)
 

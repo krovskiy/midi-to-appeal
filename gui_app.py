@@ -37,8 +37,7 @@ class MainWindow(QtWidgets.QWidget):
         self.channel_config()
         self.bpm_config()
         self.setup_layout()
-        self.chord_combobox()
-        self.mode_combobox()
+        self.combobox()
         self.style_text()
         self.playback_status_changed.connect(self.update_status_label)
         self.default_midiplaying()
@@ -89,6 +88,7 @@ class MainWindow(QtWidgets.QWidget):
         self.select_mode = QtWidgets.QComboBox()
         self.start_key_assign = QtWidgets.QLineEdit()
         self.stop_key_assign = QtWidgets.QLineEdit()
+        self.b_note_direction_combo = QtWidgets.QComboBox()
 
         pixmap = QtGui.QPixmap(resource_path("./materials/si3lEuEp2Fk.png"))
         pixmap = pixmap.scaled(
@@ -114,6 +114,7 @@ class MainWindow(QtWidgets.QWidget):
         self.start_key_assign_text = QtWidgets.QLabel("Start key:")
         self.stop_key_assign_text = QtWidgets.QLabel("Stop key:")
         self.status_label_animated = QtWidgets.QLabel()
+        self.b_note_text = QtWidgets.QLabel("Root note:")
 
     def style_text(self):
         font_family_style = f"font-family: '{font_family}';"
@@ -122,7 +123,8 @@ class MainWindow(QtWidgets.QWidget):
             self.channel_input_text,
             self.select_chord_text,
             self.select_mode_text,
-            self.status_label]
+            self.status_label,
+            self.b_note_text]
         key_widgets = [self.start_key_assign_text, self.stop_key_assign_text]
         keys = [self.start_key_assign, self.stop_key_assign]
         fixed = [
@@ -131,7 +133,8 @@ class MainWindow(QtWidgets.QWidget):
             self.select_chord,
             self.select_mode,
             self.stop_key_assign,
-            self.start_key_assign]
+            self.start_key_assign,
+            self.b_note_direction_combo]
 
         for s in keys:
             s.setReadOnly(True)
@@ -191,11 +194,13 @@ class MainWindow(QtWidgets.QWidget):
         layout.addWidget(self.start_key_assign,5,1, alignment=QtCore.Qt.AlignCenter)
         layout.addWidget(self.stop_key_assign_text,6,0, alignment=QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         layout.addWidget(self.stop_key_assign,6,1, alignment=QtCore.Qt.AlignCenter)
-        layout.addWidget(self.status_label,7,0, alignment=QtCore.Qt.AlignHCenter)
-        layout.addWidget(self.status_label_animated,7,1, alignment=QtCore.Qt.AlignRight | QtCore.Qt.AlignHCenter)
-        layout.addWidget(self.status_text,7,1, alignment=QtCore.Qt.AlignHCenter)
-        layout.addWidget(self.button, 8, 0, alignment=QtCore.Qt.AlignBottom)
-        layout.addWidget(self.text_edit, 8, 1, alignment=QtCore.Qt.AlignBottom)
+        layout.addWidget(self.b_note_text,7,0, alignment=QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        layout.addWidget(self.b_note_direction_combo,7,1, alignment=QtCore.Qt.AlignCenter)
+        layout.addWidget(self.status_label,8,0, alignment=QtCore.Qt.AlignHCenter)
+        layout.addWidget(self.status_label_animated,8,1, alignment=QtCore.Qt.AlignRight | QtCore.Qt.AlignHCenter)
+        layout.addWidget(self.status_text,8,1, alignment=QtCore.Qt.AlignHCenter)
+        layout.addWidget(self.button, 9, 0, alignment=QtCore.Qt.AlignBottom)
+        layout.addWidget(self.text_edit, 9, 1, alignment=QtCore.Qt.AlignBottom)
 
         self.setLayout(layout)
 
@@ -284,8 +289,9 @@ class MainWindow(QtWidgets.QWidget):
         channel = int(self.channel_input.value() - 1)
         debug = False  # change this value for debug
         status_callback = self.playback_status_changed.emit
+        b_note_direction = self.b_note_direction_combo.currentText().lower()
         if not self.isActiveWindow():
-            play(smidi_path, bpm, chord, channel, debug, status_callback)
+            play(smidi_path, bpm, chord, channel, debug, status_callback, b_note_direction)
         else:
             print('program in focus')
 
@@ -356,7 +362,7 @@ class MainWindow(QtWidgets.QWidget):
         self.status_label_animated.setMovie(self.status_animated)
         self.status_animated.start()
 
-    def chord_combobox(self):
+    def combobox(self):
         '''Values for the chords combobox'''
         self.select_chord.addItems(['G# Minor / B Major',
                                     'A Minor / C Major',
@@ -370,9 +376,9 @@ class MainWindow(QtWidgets.QWidget):
                                     'F Minor / Ab Major',
                                     'F# Minor / A Major',
                                     'G Minor / Bb Major'])
-
-    def mode_combobox(self):
+        self.b_note_direction_combo.addItems(["Lower", "Higher"])
         self.select_mode.addItems(['Synth'])
+        
         '''
         self.select_mode.addItems(['Synth', 'Drums'])
 
@@ -394,7 +400,7 @@ if __name__ == "__main__":
     font.setStyleStrategy(QtGui.QFont.PreferAntialias)
     app.setFont(font)
     widget = MainWindow()
-    widget.setFixedSize(380, 420)
+    widget.setFixedSize(385, 440)
     widget.show()
     app.aboutToQuit.connect(widget.config_save)
     sys.exit(app.exec())
