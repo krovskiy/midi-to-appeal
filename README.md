@@ -27,7 +27,7 @@ In Metal Gear Online 3, every class — *Scout, Enforcer, and Infiltrator* — f
 
 - It includes 8 notes (from B to B*), spanning across two octaves (B4–B6).
 
-- The synth is in mono and legato.
+- The synth is monophonic and legato.
   
 - Notes are triggered via keyboard movement inputs:
   - W, A, S, D for basic notes.
@@ -48,6 +48,51 @@ Special Characters
 Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a drum kit rather than synth-based tones
 
 ## How does this script work
+
+<p align="center">
+  <img src="https://github.com/krovskiy/midi-to-appeal/raw/main/images/1.jpg" width="400">
+</p>
+
+<details>
+<summary><strong>Settings Overview</strong></summary>
+
+<br/>
+
+<h4>Channel (int: 1–16)</h4>
+<p>Specifies the MIDI channel to send data on. Standard MIDI supports 16 channels (1–16). Routes the correct notes from the desired instrument or track.</p>
+
+<h4>BPM (int: 80–180)</h4>
+<p>Controls the tempo of the playback. Valid range is between 80–180. Slower is sometimes better because of the legato function.</p>
+
+<h4>Chord (ComboBox – str)</h4>
+<p>Dropdown selection containing various musical chords. Selected chords are transposed and mapped to the 'Appeal' system.</p>
+
+<h4>Mode (ComboBox – str)</h4>
+<p>Defines the sound type. Default characters use synth; special ones use drumkits.</p>
+
+<h4>Start Key (QLineEdit – str)</h4>
+<p>The key that initiates the playback. Pressing the defined start key will begin the performance or sequence.</p>
+
+<h4>Stop Key (QLineEdit – str)</h4>
+<p>The key that stops the playback. Pressing the defined stop key will halt the performance.</p>
+
+<h4>Root Note (ComboBox – str)</h4>
+<p>Adjusts the root of the selected chord either down ('Lower') or up ('Higher') by an octave at the beginning.</p>
+
+<h4>Status (str: 'Idle' / 'Completed' / 'Playing' / 'Stopped')</h4>
+<p>Indicates the current state of the system:</p>
+<ul>
+  <li><strong>⬜ Idle</strong>: Awaiting input.</li>
+  <li><strong>🟩 Playing</strong>: Currently active and performing.</li>
+  <li><strong>🟥 Stopped</strong>: Manually halted.</li>
+  <li><strong>🟦 Completed</strong>: Finished a full playback process.</li>
+</ul>
+
+<h4>Open File (QDialog – str)</h4>
+<p>Opens and loads a MIDI file into the program.</p>
+
+</details>
+
 
 ## TO-DO List
 
