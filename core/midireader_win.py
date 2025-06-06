@@ -32,8 +32,6 @@ Key behaviors:
 '''
 
 
-
-
 def check_b_note_press(note, raw_note, first_b_note, b_note_direction):
     if first_b_note is None:
         first_b_note = raw_note

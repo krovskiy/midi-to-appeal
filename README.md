@@ -26,6 +26,8 @@ In Metal Gear Online 3, every class — *Scout, Enforcer, and Infiltrator* — f
 - The system is tuned to the B Major / G# Minor scale.
 
 - It includes 8 notes (from B to B*), spanning across two octaves (B4–B6).
+
+- The synth is in mono and legato.
   
 - Notes are triggered via keyboard movement inputs:
   - W, A, S, D for basic notes.
@@ -36,11 +38,11 @@ In Metal Gear Online 3, every class — *Scout, Enforcer, and Infiltrator* — f
 ### Sound Traits by Class
 Each class has its own unique waveform/sound style:
 
-- Enforcer: (waveform: [blank])
+- Enforcer: **Pulse wave** 
 
-- Scout: (waveform: [blank])
+- Scout: **Sawtooth wave**
 
-- Infiltrator: (waveform: [blank])
+- Infiltrator: **Sine wave**
 
 Special Characters
 Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a drum kit rather than synth-based tones
@@ -54,7 +56,8 @@ Unlike standard classes, special characters (Ocelot, Snake, Quiet) use a drum ki
 - [ ] Allow color customization  
 - [ ] Add `drumkit` mode for special characters  
 - [x] Switch to PySide6  
-- [ ] Optimize the code  
+- [ ] Optimize the code 
+- [ ] Add note length (e.g. 0.2 - 0.8 ms) 
 
 ## Requirements
 
