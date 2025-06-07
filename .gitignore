@@ -15,3 +15,5 @@ icon.ico
 !images/*
 !midi-to-appeal_run.bat
 !midi-to-appeal_run.sh
+!midis/
+!midis/*
